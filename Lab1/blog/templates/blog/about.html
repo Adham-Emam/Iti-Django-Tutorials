@@ -1,0 +1,109 @@
+<!-- Create file: blog/templates/blog/about.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About - BlogHub</title>
+    <!-- Bootstrap 5 CSS from static files -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container">
+        <a class="navbar-brand fw-bold" href="/">BlogHub</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div
+          class="collapse navbar-collapse justify-content-end"
+          id="navbarNav"
+        >
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/contact/">Contact</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/posts/">Posts</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Header -->
+    <div class="bg-dark text-white py-4">
+      <div class="container">
+        <h1>About BlogHub</h1>
+        <p class="lead">Your platform for sharing ideas since 2025</p>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container my-5">
+      <div class="row">
+        <div class="col-lg-8">
+          <h2>Our Story</h2>
+          <p class="lead">
+            BlogHub is your trusted blogging platform, founded in 2025 with a
+            mission to help writers share their ideas with the world.
+          </p>
+          <p>
+            Started as a simple blog, we've grown to serve thousands of writers
+            and readers across the globe. We believe in the power of words,
+            creativity, and authentic storytelling.
+          </p>
+
+          <h2 class="mt-4">What We Offer</h2>
+          <ul class="list-group list-group-flush mb-4">
+            <li class="list-group-item">✓ Easy-to-use publishing platform</li>
+            <li class="list-group-item">✓ Beautiful, responsive templates</li>
+            <li class="list-group-item">✓ SEO optimization</li>
+            <li class="list-group-item">✓ Reader engagement tools</li>
+            <li class="list-group-item">✓ Community support</li>
+          </ul>
+        </div>
+
+        <div class="col-lg-4">
+          <div class="card bg-light">
+            <div class="card-body">
+              <h4 class="card-title">Quick Stats</h4>
+              <hr />
+              <p><strong>Founded:</strong> 2025</p>
+              <p><strong>Posts:</strong> 10,000+</p>
+              <p><strong>Writers:</strong> 5,000+</p>
+              <p><strong>Readers:</strong> 50,000+</p>
+              <p><strong>Topics:</strong> 25+</p>
+            </div>
+          </div>
+
+          <div class="card mt-3 bg-primary text-white">
+            <div class="card-body text-center">
+              <h5>Ready to Write?</h5>
+              <a href="/" class="btn btn-light mt-2">Go to Homepage</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap 5 JS from static files -->
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+  </body>
+</html>
