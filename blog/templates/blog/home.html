@@ -1,0 +1,180 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+{% block title %}Home - BlogHub{% endblock %}
+
+
+{% block li %}
+    <li class="nav-item">
+        <a class="nav-link active" href="{% url "blog:home" %}">Home</a>
+    </li>
+
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+           data-bs-toggle="dropdown">
+            Categories
+        </a>
+        <ul class="dropdown-menu">
+
+            <li><a class="dropdown-item" href="{% url 'blog:category_posts' 'technology' %}">Technology</a></li>
+            <li><a class="dropdown-item" href="{% url 'blog:category_posts' 'self-improvement' %}">Self-Improvement</a>
+            </li>
+            <li><a class="dropdown-item" href="{% url 'blog:category_posts' 'design' %}">Design</a></li>
+            <li><a class="dropdown-item" href="{% url 'blog:category_posts' 'business' %}">Business</a></li>
+            <li><a class="dropdown-item" href="{% url 'blog:category_posts' 'lifestyle' %}">Lifestyle</a></li>
+            <li><a class="dropdown-item" href="{% url 'blog:category_posts' 'health' %}">Health</a></li>
+            <li><a class="dropdown-item" href="{% url 'blog:category_posts' 'career' %}">Career</a></li>
+
+            <li>
+                <hr class="dropdown-divider">
+            </li>
+            <li><a class="dropdown-item" href="{% url 'blog:posts' %}">All Posts</a></li>
+        </ul>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url "blog:posts" %}">Posts</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url "blog:about" %}">About</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url "blog:contact" %}">Contact</a>
+    </li>
+{% endblock %}
+
+{% block content %}
+    <!-- Hero Section -->
+    <div class="container-fluid bg-primary text-white py-5">
+        <div class="container">
+            <h1 class="display-4">� Welcome to {{ site_name }}!</h1>
+            <p class="lead">{{ tagline }}</p>
+            <a href="/posts/" class="btn btn-light btn-lg">Read Posts</a>
+        </div>
+    </div>
+
+    {% comment %} Featured Topics {% endcomment %}
+    {% if is_featured_active %}
+        <div class="container mt-4">
+            <div class="alert alert-info border-start border-5 border-info">
+                <h2 class="alert-heading">⭐ FEATURED TOPIC!</h2>
+                <p class="mb-0">Check out our featured topic: {{ spotlight_topic }}!</p>
+            </div>
+        </div>
+    {% endif %}
+
+    <!-- Blog Statistics -->
+    <div class="container my-4">
+        <div class="card bg-light">
+            <div class="card-body">
+                <h2 class="card-title">Our Community</h2>
+                <div class="row text-center mt-3">
+                    <div class="col-md-4">
+                        <h3 class="text-primary">{{ total_posts }}</h3>
+                        <p class="text-muted">Published Posts</p>
+                    </div>
+                    <div class="col-md-4">
+                        <h3 class="text-primary">{{ total_authors }}</h3>
+                        <p class="text-muted">Active Writers</p>
+                    </div>
+                    <div class="col-md-4">
+                        <h3 class="text-primary">2025</h3>
+                        <p class="text-muted">Established</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if featured_posts %}
+        <div class="container my-5"> asdas
+            <h2 class="text-center mb-4">✨ Featured Posts</h2>
+            <div class="row g-4">
+                {% for post in featured_posts %}
+                    <div class="col-md-6 col-lg-3">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body d-flex flex-column">
+                                <!-- Emoji Icon -->
+                                <div class="text-center mb-3">
+                                    <h1 style="font-size: 3rem; margin: 0;">
+                                        {% if post.category == 'Technology' %}💻
+                                        {% elif post.category == 'Design' %}🎨
+                                        {% elif post.category == 'Self-Improvement' %}🌟
+                                        {% elif post.category == 'Business' %}💼
+                                        {% elif post.category == 'Lifestyle' %}🌿
+                                        {% elif post.category == 'Health' %}❤️
+                                        {% elif post.category == 'Career' %}🚀
+                                        {% else %}📝
+                                        {% endif %}
+                                    </h1>
+                                </div>
+
+                                <!-- Category Badge -->
+                                <div class="mb-2">
+                                    <span class="badge bg-primary">{{ post.category }}</span>
+                                </div>
+
+                                <!-- Title -->
+                                <h5 class="card-title fw-bold">{{ post.title }}</h5>
+
+                                <!-- Author and Date -->
+                                <p class="text-muted small mb-2">
+                                    <strong>By:</strong> {{ post.author }}<br>
+                                    <strong>📅</strong> {{ post.date|date:"M d, Y" }}
+                                </p>
+
+                                <!-- Excerpt -->
+                                <p class="card-text text-muted flex-grow-1">{{ post.excerpt }}</p>
+
+                                <!-- Reading Time and Button -->
+                                <div class="mt-auto">
+                                    <p class="text-muted small mb-2">
+                                        <strong>⏱️</strong> {{ post.reading_time }}
+                                    </p>
+                                    <a href="{% url 'blog:post_detail' post.id %}" class="btn btn-primary btn-sm w-100">Read
+                                        More</a></div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+
+    <!-- Features Section (Loop through features) -->
+    <div class="container my-5">
+        <h2 class="text-center mb-4">Why Choose {{ site_name }}?</h2>
+        <div class="row">
+            {% for feature in features %}
+                <div class="col-md-6 col-lg-3 mb-3">
+                    <div class="card h-100 text-center">
+                        <div class="card-body">
+                            <h3>{{ feature.icon }}</h3>
+                            <h5 class="card-title">{{ feature.title }}</h5>
+                            <p class="card-text">{{ feature.description }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <!-- Featured Topics (Loop through topics) -->
+    <div class="container my-5">
+        <h2 class="text-center mb-4">Popular Topics</h2>
+        <div class="row">
+            {% for topic in featured_topics %}
+                <div class="col-md-6 col-lg-4 mb-3">
+                    <div class="list-group">
+                        <a href="#" class="list-group-item list-group-item-action">
+                            {{ topic }}
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="text-center mt-4">
+            <a href="{% url "blog:about" %}" class="btn btn-primary">Learn more about {{ site_name }}</a>
+        </div>
+
+    </div>
+{% endblock %}

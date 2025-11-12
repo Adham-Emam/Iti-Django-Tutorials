@@ -1,0 +1,104 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+
+{% block title %}About - {{ company_name }} {% endblock %}
+
+{% block li %}
+
+    <li class="nav-item">
+        <a class="nav-link" href="{% url "blog:home" %}">Home</a>
+    </li>
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+           data-bs-toggle="dropdown">
+            Categories
+        </a>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="{% url 'blog:category_posts' 'technology' %}">Technology</a></li>
+            <li><a class="dropdown-item" href="{% url 'blog:category_posts' 'self-improvement' %}">Self-Improvement</a>
+            </li>
+            <li><a class="dropdown-item" href="{% url 'blog:category_posts' 'design' %}">Design</a></li>
+            <li><a class="dropdown-item" href="{% url 'blog:category_posts' 'business' %}">Business</a></li>
+            <li><a class="dropdown-item" href="{% url 'blog:category_posts' 'lifestyle' %}">Lifestyle</a></li>
+            <li><a class="dropdown-item" href="{% url 'blog:category_posts' 'health' %}">Health</a></li>
+            <li><a class="dropdown-item" href="{% url 'blog:category_posts' 'career' %}">Career</a></li>
+
+            <li><a class="dropdown-item" href="{% url 'blog:category_posts' 'art' %}">Art</a></li>
+            <li>
+                <hr class="dropdown-divider">
+            </li>
+            <li><a class="dropdown-item" href="{% url 'blog:posts' %}">All Posts</a></li>
+        </ul>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url "blog:posts" %}">Posts</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link active" href="{% url "blog:about" %}">About</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url "blog:contact" %}">Contact</a>
+    </li>
+
+{% endblock %}
+
+
+{% block content %}
+    <!-- Header -->
+    <div class="bg-dark text-white py-4">
+        <div class="container">
+            <h1>About {{ company_name }}</h1>
+            <p class="lead">Serving customers since {{ founded_year }}</p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-lg-8">
+                <h2>Our Mission</h2>
+                <p class="lead">{{ mission }}</p>
+
+                <h2 class="mt-4">Our Team</h2>
+                <p>
+                    We're a team of <strong>{{ team_size }}</strong> dedicated
+                    professionals working to bring you the best shopping experience.
+                </p>
+
+                <h2 class="mt-4">Our Values</h2>
+                <div class="row mt-3">
+                    {% for value in values %}
+                        <div class="col-md-6 col-lg-3 mb-3">
+                            <div class="card bg-light h-100">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">{{ value }}</h5>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card bg-light">
+                    <div class="card-body">
+                        <h4 class="card-title">Quick Stats</h4>
+                        <hr/>
+                        <p><strong>Founded:</strong> {{ founded_year }}</p>
+                        <p><strong>Team Size:</strong> {{ team_size }} people</p>
+                        <p><strong>Mission:</strong> {{ mission }}</p>
+                    </div>
+                </div>
+
+                <div class="card mt-3 bg-primary text-white">
+                    <div class="card-body text-center">
+                        <h5>Ready to Shop?</h5>
+                        <a href="/" class="btn btn-light mt-2">Go to Homepage</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,128 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+
+{% block title %} {{ post.title }} - BlogHub {% endblock %}
+
+
+{% block li %}
+
+    <li class="nav-item">
+        <a class="nav-link" href="{% url "blog:home" %}">Home</a>
+    </li>
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+           data-bs-toggle="dropdown">
+            Categories
+        </a>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="{% url 'blog:category_posts' 'technology' %}">Technology</a></li>
+            <li><a class="dropdown-item" href="{% url 'blog:category_posts' 'self-improvement' %}">Self-Improvement</a>
+            </li>
+            <li><a class="dropdown-item" href="{% url 'blog:category_posts' 'design' %}">Design</a></li>
+            <li><a class="dropdown-item" href="{% url 'blog:category_posts' 'business' %}">Business</a></li>
+            <li><a class="dropdown-item" href="{% url 'blog:category_posts' 'lifestyle' %}">Lifestyle</a></li>
+            <li><a class="dropdown-item" href="{% url 'blog:category_posts' 'health' %}">Health</a></li>
+            <li><a class="dropdown-item" href="{% url 'blog:category_posts' 'career' %}">Career</a></li>
+
+            <li>
+                <hr class="dropdown-divider">
+            </li>
+            <li><a class="dropdown-item" href="{% url 'blog:posts' %}">All Posts</a></li>
+        </ul>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link active" href="{% url "blog:posts" %}">Posts</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url "blog:about" %}">About</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url "blog:contact" %}">Contact</a>
+    </li>
+
+{% endblock %}
+{% block content %}
+
+    <!-- Breadcrumb Navigation -->
+    <div class="container mt-3">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'blog:home' %}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'blog:posts' %}">Posts</a></li>
+                <li class="breadcrumb-item active">{{ post.title }}</li>
+            </ol>
+        </nav>
+    </div>
+
+    <!-- Post Details -->
+    <div class="container my-5">
+        <div class="row">
+            <!-- Post Cover Image Placeholder -->
+            <div class="col-md-12">
+                <div class="card mb-4">
+                    <div class="card-body text-center"
+                         style="min-height: 300px; display: flex; align-items: center; justify-content: center; background: #f8f9fa;">
+                        <h1 style="font-size: 8rem;">�</h1>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Post Information -->
+            <div class="col-md-12">
+                <h1 class="display-5">{{ post.title }}</h1>
+
+                <!-- Category Badge and Meta Info -->
+                <p class="text-muted">
+                    <span class="badge bg-secondary">{{ post.category }}</span>
+                    | By {{ post.author }} | {{ post.date }} | {{ post.reading_time }} min read | {{ post.views }} views
+                </p>
+
+
+
+                <!-- Content -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Article Content</h5>
+                        <p class="card-text">{{ post.content }}</p>
+                    </div>
+                </div>
+
+                <!-- Tags -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Tags</h5>
+                        <div>
+                            {% for tag in tags %}
+                                <span class="badge bg-info me-2">{{ tag }}</span>
+                            {% empty %}
+                                <p>No Tags</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Engagement Buttons -->
+                {% if post.published %}
+                    <button class="btn btn-primary btn-lg w-100 mb-2">
+                        � Like this Post
+                    </button>
+                    <button class="btn btn-outline-secondary w-100">
+                        🔖 Bookmark for Later
+                    </button>
+                {% else %}
+                    <button class="btn btn-secondary btn-lg w-100" disabled>
+                        Currently Unavailable
+                    </button>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Back to Posts Link -->
+        <div class="mt-5">
+            <a href="{% url 'blog:posts' %}" class="btn btn-outline-primary">
+                ← Back to All Posts
+            </a></div>
+    </div>
+
+{% endblock %}
