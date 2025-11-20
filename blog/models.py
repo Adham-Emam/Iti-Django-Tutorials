@@ -33,7 +33,8 @@ class Post(models.Model):
     category = models.ForeignKey(
         Category, on_delete=models.SET_NULL, null=True, related_name="posts"
     )
-    excerpt = models.TextField()
+    excerpt = models.TextField(null=True, blank=True)
+    content = models.TextField(null=True, blank=True)
     published = models.BooleanField(default=False)
     created_at = models.DateField(auto_now_add=True)
     tags = models.ManyToManyField(Tag, related_name="posts")

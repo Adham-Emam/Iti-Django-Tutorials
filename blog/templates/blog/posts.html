@@ -1,7 +1,7 @@
 {% extends 'blog/base.html' %}
 {% load static %}
 
-{% block tite %}{{ page_title }} - BlogHub {% endblock %}
+{% block title %}{{ page_title }} - BlogHub {% endblock %}
 
 {% block extra_css %}
     <style>
@@ -87,6 +87,7 @@
     <!-- Posts Grid -->
     <div class="container mb-5">
         <div class="row g-4">
+            <a href="{% url 'blog:post_create' %}">Create Post</a>
             {% for post in posts %}
                 <div class="col-lg-4 col-md-6 mb-4">
                     <div class="card h-100">

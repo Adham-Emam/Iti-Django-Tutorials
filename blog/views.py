@@ -1,7 +1,15 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import Http404
-from datetime import datetime, date
+from datetime import datetime
 from django.contrib import messages
+from django.views.generic import (
+    ListView,
+    DetailView,
+    CreateView,
+    UpdateView,
+    DeleteView,
+)
+from django.urls import reverse_lazy
 from .models import Post
 
 
@@ -32,7 +40,7 @@ def home(request):
                 "description": "Build your audience and community",
             },
             {
-                "icon": "�",
+                "icon": "📊",
                 "title": "Analytics",
                 "description": "Track your post performance",
             },
@@ -71,32 +79,17 @@ def posts(request):
         "posts": posts,
         "total_posts": len(posts),
     }
-
     return render(request, "blog/posts.html", context)
 
 
 def post_detail(request, post_id):
-    from django.shortcuts import get_object_or_404
-
     post = get_object_or_404(Post, id=post_id)
-
-    if post is None:
-        raise Http404(f"Post {post_id} not found")
-
     tags = post.tags.all()
-
     context = {"post": post, "tags": tags}
-
     return render(request, "blog/post_detail.html", context)
 
 
 def category_posts(request, category_name):
-    """
-    Display posts filtered by category
-
-    URL: /category/technology/
-    Shows only posts in that category
-    """
     posts = Post.objects.filter(published=True)
 
     if category_name != category_name.lower():
@@ -115,16 +108,8 @@ def category_posts(request, category_name):
 
 
 def search_posts(request):
-    """
-    Search posts by title or content or category
-
-    URL: /search/?q=django
-
-    """
     posts = Post.objects.filter(published=True)
-
-    # Get a search query from URL parameters
-    query = request.GET.get("q", "")  # Default to empty string if no query
+    query = request.GET.get("q", "")
 
     if not query:
         search_results = posts
@@ -148,40 +133,20 @@ def search_posts(request):
 
 
 def contact(request):
-    """
-    Contact page with form submission
-    GET: Show form
-    POST: Process form submission
-    """
     if request.method == "POST":
-        # Get form data
         name = request.POST.get("name")
         email = request.POST.get("email")
         subject = request.POST.get("subject")
         message = request.POST.get("message")
 
-        # Basic validation
         if not all([name, email, subject, message]):
             messages.error(request, "Please fill in all fields.")
         elif "@" not in email:
             messages.error(request, "Please enter a valid email address.")
         else:
-
-            print(f"Contact form submission:")
-            print(f"Name: {name}")
-            print(f"Email: {email}")
-            print(f"Subject: {subject}")
-            print(f"Message: {message}")
-
-            # Success message
-            messages.success(
-                request,
-                f"Thank you {name}! We received your message and will respond soon.",
-            )
-
+            print(f"Contact: {name}, {email}, {subject}, {message}")
+            messages.success(request, f"Thank you {name}! We received your message.")
             return redirect("blog:contact")
-
-        # GET request or after POST redirect
 
     context = {
         "current_year": datetime.now().year,
@@ -196,23 +161,25 @@ def contact(request):
             {"name": "Marketing", "email": "Marketing@bloghub.com"},
         ],
         "social_media": [
-            {"platform": "Facebook", "url": "https://www.facebook.com"},
-            {"platform": "Reddit", "url": "https://www.reddit.com"},
-            {"platform": "Twitter", "url": "https://www.twitter.com"},
+            {"platform": "Facebook"},
+            {"platform": "Reddit"},
+            {"platform": "Twitter"},
         ],
     }
     return render(request, "blog/contact.html", context)
 
 
+# ----------------------
+# Author Posts
+# ----------------------
 def author_posts(request, author_name):
     posts = Post.objects.filter(published=True)
-    author_name_normalized = author_name.lower().replace(" ", "-")
+    author_slug = author_name.lower().replace(" ", "-")
 
     filtered = [
         p
         for p in posts
-        if f"{p.author.first_name.lower()} {p.author.first_name.lower()}"
-        == author_name_normalized
+        if f"{p.author.first_name.lower()} {p.author.last_name.lower()}" == author_slug
     ]
 
     context = {
@@ -221,5 +188,51 @@ def author_posts(request, author_name):
         "total_posts": len(filtered),
         "current_year": datetime.now().year,
     }
-
     return render(request, "blog/author_posts.html", context)
+
+
+class PostListView(ListView):
+    model = Post
+    template_name = "blog/post_list.html"
+    context_object_name = "posts"
+    queryset = Post.objects.filter(published=True)
+
+
+class PostDetailView(DetailView):
+    model = Post
+    template_name = "blog/post_detail.html"
+    context_object_name = "post"
+
+
+class PostCreateView(CreateView):
+    model = Post
+    fields = [
+        "title",
+        "excerpt",
+        "content",
+        "category",
+        "author",
+        "published",
+    ]
+    template_name = "blog/post_create.html"
+    success_url = reverse_lazy("blog:post_list")
+
+
+class PostUpdateView(UpdateView):
+    model = Post
+    fields = [
+        "title",
+        "excerpt",
+        "content",
+        "category",
+        "author",
+        "published",
+    ]
+    template_name = "blog/post_update.html"
+    success_url = reverse_lazy("blog:post_list")
+
+
+class PostDeleteView(DeleteView):
+    model = Post
+    template_name = "blog/post_delete.html"
+    success_url = reverse_lazy("blog:post_list")
