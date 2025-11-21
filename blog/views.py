@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import Http404
 from datetime import datetime
 from django.contrib import messages
 from django.views.generic import (
@@ -169,9 +168,6 @@ def contact(request):
     return render(request, "blog/contact.html", context)
 
 
-# ----------------------
-# Author Posts
-# ----------------------
 def author_posts(request, author_name):
     posts = Post.objects.filter(published=True)
     author_slug = author_name.lower().replace(" ", "-")

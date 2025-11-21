@@ -4,9 +4,14 @@
 {% block title %}Update Post{% endblock %}
 
 {% block content %}
-<h1>Update Post</h1>
-<form method="post" class="form">
-  {% csrf_token %} {{ form.as_p }}
-  <button type="submit">Update</button>
-</form>
+<div class="container mt-4">
+  <h1 class="mb-4">Update Post</h1>
+
+  <form method="post" class="p-4 border rounded shadow-sm bg-light">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <button type="submit" class="btn btn-success mt-3">Update</button>
+  </form>
+</div>
 {% endblock %}
