@@ -19,17 +19,15 @@
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
-        <a class="navbar-brand fw-bold" href="#">✍️ BlogHub</a>
+    <a class="navbar-brand fw-bold" href="{% url 'blog:home' %}">✍️ BlogHub</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
-                {% block li %}
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url "blog:home" %}">Home</a>
+                                  <li class="nav-item">
+                        <a class="nav-link" href="{% url "blog:posts" %}">Posts</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
@@ -57,16 +55,13 @@
                         </ul>
                     </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url "blog:posts" %}">Posts</a>
-                    </li>
+  
                     <li class="nav-item">
                         <a class="nav-link" href="{% url "blog:about" %}">About</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url "blog:contact" %}">Contact</a>
                     </li>
-                {% endblock %}
             </ul>
             <!-- Search Form -->
             <form method="GET" action="{% url 'blog:search_posts' %}" class="d-flex ms-3">

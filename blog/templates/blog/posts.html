@@ -1,110 +1,79 @@
-{% extends 'blog/base.html' %}
-{% load static %}
+{% extends 'blog/base.html' %} {% load static %} {% block title %}{{ page_title
+}} - BlogHub {% endblock %} {% block extra_css %}
+<style>
+  body {
+    background-color: #f8f9fa;
+  }
 
-{% block title %}{{ page_title }} - BlogHub {% endblock %}
+  .hero-section {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 3rem 0;
+    margin-bottom: 2rem;
+  }
 
-{% block extra_css %}
-    <style>
-        body {
-            background-color: #f8f9fa;
-        }
+  .post-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
 
-        .hero-section {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 3rem 0;
-            margin-bottom: 2rem;
-        }
+  .post-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  }
 
-        .post-card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
+  .category-badge {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+  }
+</style>
 
-        .post-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-        }
+{% endblock %} {% block content %}
 
-        .category-badge {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 500;
-        }
-    </style>
+<!-- Hero Section -->
+<div class="hero-section">
+  <div class="container">
+    <h1 class="display-4 fw-bold text-center">{{ page_title }}</h1>
+    <p class="lead text-center">
+      Total Posts: <strong>{{ total_posts }}</strong>
+    </p>
+  </div>
+</div>
 
-{% endblock %}
-
-{% block li %}
-    <li class="nav-item">
-        <a class="nav-link" href="{% url "blog:home" %}">Home</a>
-    </li>
-    <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-           data-bs-toggle="dropdown">
-            Categories
-        </a>
-        <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="{% url 'blog:category_posts' 'technology' %}">Technology</a></li>
-            <li><a class="dropdown-item" href="{% url 'blog:category_posts' 'self-improvement' %}">Self-Improvement</a>
-            </li>
-            <li><a class="dropdown-item" href="{% url 'blog:category_posts' 'design' %}">Design</a></li>
-            <li><a class="dropdown-item" href="{% url 'blog:category_posts' 'business' %}">Business</a></li>
-            <li><a class="dropdown-item" href="{% url 'blog:category_posts' 'lifestyle' %}">Lifestyle</a></li>
-            <li><a class="dropdown-item" href="{% url 'blog:category_posts' 'health' %}">Health</a></li>
-            <li><a class="dropdown-item" href="{% url 'blog:category_posts' 'career' %}">Career</a></li>
-
-            <li>
-                <hr class="dropdown-divider">
-            </li>
-            <li><a class="dropdown-item" href="{% url 'blog:posts' %}">All Posts</a></li>
-        </ul>
-    </li>
-
-    <li class="nav-item">
-        <a class="nav-link active" href="{% url "blog:posts" %}">Posts</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="{% url "blog:about" %}">About</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="{% url "blog:contact" %}">Contact</a>
-    </li>
-{% endblock %}
-
-{% block content %}
-
-    <!-- Hero Section -->
-    <div class="hero-section">
-        <div class="container">
-            <h1 class="display-4 fw-bold text-center">{{ page_title }}</h1>
-            <p class="lead text-center">Total Posts: <strong>{{ total_posts }}</strong></p>
+<!-- Posts Grid -->
+<div class="container mb-5">
+  <div class="row g-4">
+    <a
+      href="{% url 'blog:post_create' %}"
+      class="btn btn-primary btn-lg w-100 mb-2"
+      >Create Post</a
+    >
+    {% for post in posts %}
+    <div class="col-lg-4 col-md-6 mb-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title">{{ post.title }}</h5>
+          <p class="text-muted small">
+            {{ post.category }} | By {{ post.author }} {{ post.date }} | {{
+            post.reading_time }} min read
+          </p>
+          <p class="card-text">{{ post.excerpt }}</p>
         </div>
-    </div>
-
-    <!-- Posts Grid -->
-    <div class="container mb-5">
-        <div class="row g-4">
-            <a href="{% url 'blog:post_create' %}"  class="btn btn-primary btn-lg w-100 mb-2">Create Post</a>
-            {% for post in posts %}
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ post.title }}</h5>
-                            <p class="text-muted small">{{ post.category }} | By {{ post.author }} {{ post.date }} | {{ post.reading_time }} min read</p>
-                            <p class="card-text">{{ post.excerpt }}</p>
-                        </div>
-                        <div class="card-footer">
-                            <a href="{% url 'blog:post_detail' post.id %}" class="btn btn-primary btn-sm w-100">
-                                Read More
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}
+        <div class="card-footer">
+          <a
+            href="{% url 'blog:post_detail' post.id %}"
+            class="btn btn-primary btn-sm w-100"
+          >
+            Read More
+          </a>
         </div>
+      </div>
     </div>
+    {% endfor %}
+  </div>
+</div>
 
 {% endblock %}
